@@ -54,6 +54,7 @@ params.kallisto_index   = getGenomeAttribute('kallisto')
 workflow NFCORE_RNASEQ {
 
     take:
+    ch_samples
     ch_samplesheet
 
     main:
@@ -104,6 +105,7 @@ workflow NFCORE_RNASEQ {
     // WORKFLOW: Run nf-core/rnaseq workflow
     //
     RNASEQ (
+        ch_samples,
         ch_samplesheet,
         ch_versions,
         PREPARE_GENOME.out.fasta,

@@ -5,7 +5,9 @@ Prototype for importing entire nf-core pipelines as subworkflows in a meta-pipel
 
 Notes:
 
-- Both `fetchngs` and `rnaseq` have been set up to better supporting importing (currently on `dev` branch), by moving code from the `bin` and `lib` directories into modules and subworkflows.
+- Both `fetchngs` and `rnaseq` have been set up to better support importing (currently on `dev` branch), by moving code from the `bin` and `lib` directories into modules and subworkflows.
+
+  These two pipelines can be improved further by separating the saving/loading to/from published files from the "core" workflows, which should take and emit channels of files with metadata.
 
 - An `nf-core pipelines` command is needed to import top-level workflow from the pipeline repository (instead of `nf-core/modules`).
 
@@ -20,3 +22,13 @@ Notes:
 - Module config will be moved into the modules with https://github.com/nextflow-io/nextflow/pull/4510, other config is standard boilerplate with some manual edits (e.g. test profiles)
 
 - Pipeline params could be automatically merged by nf-core CLI with some manual curation to handle name conflicts
+
+- The `fromSamplesheet` channel factory in the `nf-validation` plugin should be refactored into an operator that accepts a channel of samplesheet files:
+
+  ```groovy
+  // standard usage with param
+  Channel.fromPath(params.input) | fromSamplesheet
+
+  // custom input channel
+  ch_samplesheet | fromSamplesheet
+  ```

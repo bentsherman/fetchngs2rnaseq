@@ -31,7 +31,24 @@ workflow {
     NFCORE_FETCHNGS (
         PIPELINE_INITIALISATION.out.ids
     )
+
+    ch_samples = NFCORE_FETCHNGS
+        .out
+        .sra_metadata
+        .map {
+            meta ->
+                def meta_clone = meta.clone()
+                def fastq_1 = meta.fastq_1
+                def fastq_2 = meta.fastq_2
+
+                meta_clone.remove('fastq_1')
+                meta_clone.remove('fastq_2')
+
+                return [ meta_clone, fastq_1, fastq_2 ]
+        }
+
     NFCORE_RNASEQ (
+        ch_samples,
         NFCORE_FETCHNGS.out.samplesheet
     )
 

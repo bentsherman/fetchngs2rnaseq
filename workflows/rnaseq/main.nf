@@ -85,6 +85,7 @@ ch_dummy_file                = ch_pca_header_multiqc
 workflow RNASEQ {
 
     take:
+    ch_samples           // channel: [ meta, path(fastq_1), path(fastq_2) ]
     ch_samplesheet       // channel: path(sample_sheet.csv)
     ch_versions          // channel: [ path(versions.yml) ]
     ch_fasta             // channel: path(genome.fasta)
@@ -110,8 +111,7 @@ workflow RNASEQ {
     //
     // Create channel from input file provided through params.input
     //
-    Channel
-        .fromSamplesheet("input")
+    ch_samples
         .map {
             meta, fastq_1, fastq_2 ->
                 if (!fastq_2) {
