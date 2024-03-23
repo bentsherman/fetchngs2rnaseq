@@ -32,3 +32,5 @@ Notes:
   // custom input channel
   ch_samplesheet | fromSamplesheet
   ```
+
+- nf-core currently distinguishes between `workflows` and `subworkflows`. However, from Nextflow's perspective they are the same. It might be simpler to just have `workflows` and within that, `nf-core` workflows which are installed from `nf-core/modules` and `local` workflows which are maintained locally (and can be installed via the `nf-core pipelines` command described above).
